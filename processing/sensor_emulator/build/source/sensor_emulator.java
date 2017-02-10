@@ -31,6 +31,7 @@ public void setup() {
   
   //Connect Arduino
   //println(Serial.list()); //List ports
+
   String portname = "COM3"; //TODO: enter portname
   myPort = new Serial(this, portname, 115200); //TODO: Baudrate
   background(0);
@@ -110,7 +111,7 @@ public void doRectangle(int x, int y, int brightness) {
 }
 
 public void drawLightsInit() {
-  for(int i=1;i<=10; i++) {
+  for(int i=1;i<=38; i++) {
     updateLights(i, 33);
   }
 }

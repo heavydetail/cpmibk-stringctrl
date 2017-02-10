@@ -93,7 +93,7 @@ void doRectangle(int x, int y, int brightness) {
 }
 
 void drawLightsInit() {
-  for(int i=1;i<=10; i++) {
+  for(int i=1;i<=38; i++) {
     updateLights(i, 33);
   }
 }
