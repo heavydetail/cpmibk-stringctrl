@@ -45,10 +45,10 @@ void sendPulse() {
 
 void loop()
 {
-  //int id = random(1,38); //uncomment for random data testing
-  //int brightness = random(0,255);
-  //sendChange(id,brightness);
+  int id = random(1,38); //uncomment for random data testing
+  int brightness = random(0,255);
+  sendChange(id,brightness);
 
-  sendPulse(); //fading pulse animation
+  //sendPulse(); //fading pulse animation
   delay(70); //step speed control, dont go under 40 or so.
 }

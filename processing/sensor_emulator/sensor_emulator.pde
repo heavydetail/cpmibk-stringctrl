@@ -10,7 +10,7 @@ import processing.serial.*;
 Serial myPort;
 
 void setup() {
-  size(1000,800);
+  size(800,800);
   //Connect Arduino
   //println(Serial.list()); //List ports
 
@@ -18,7 +18,7 @@ void setup() {
   myPort = new Serial(this, portname, 115200); //TODO: Baudrate
   background(0);
   colorMode(HSB,255);
-   drawLightsInit(); //Draw all Lights
+  drawLightsInit(); //Draw all Lights
 }
 
 void draw()
@@ -31,11 +31,12 @@ void pollData() {
   {
     while (myPort.available() > 0) {
       String inBuffer = myPort.readStringUntil('\n');
+
       if (inBuffer != null) {
          //Split String "SETLIGHT x y\n" into int variables and send to updateLights(x,y)
          String[] tokens = splitTokens(inBuffer, " ");
          if(tokens.length == 3 && tokens[0].equals("SETLIGHT")) {
-           updateLights(int(trim(tokens[1])),int(trim(tokens[2]))); //INT conv.
+           updateLightsbyID(int(trim(tokens[1])),int(trim(tokens[2]))); //INT conv.
            print("SET=> GROUP: "+ tokens[1] + " BRIGHT: "+tokens[2]);
          }
       }
@@ -46,54 +47,62 @@ void pollData() {
   }
 }
 
-void updateLights(int id, int _brightness){
+//Updates each seperate Light by ID
+void updateLightsbyID(int _id, int _brightness) {
+  int increment = 20;
+  if(_brightness < 0) _brightness=0; //no negative values, messes with fillcolor
+  doRectangle(10+increment*_id,10, _brightness);
 
-int increment = 100;
+}
 
-if(_brightness < 0) //prevent color t-bagging xD
-  _brightness = 0;
+//@Deprecated: Updates whole Group of Lights depending on ID
+void updateLightsGroup(int id, int _brightness){
+  int increment = 100;
 
-if(id>=1&&id<=4)
-  doRectangle(10,10,_brightness);
+  if(_brightness < 0) //prevent color t-bagging xD
+    _brightness = 0;
 
-else if(id>=5&&id<=8)
-  doRectangle(10+1*increment,10,_brightness);
+  if(id>=1&&id<=4)
+    doRectangle(10,10,_brightness);
 
-else if(id>=9&&id<=12)
-  doRectangle(10+2*increment,10,_brightness);
+  else if(id>=5&&id<=8)
+    doRectangle(10+1*increment,10,_brightness);
 
-else if(id>=13&&id<=16)
-  doRectangle(10+3*increment,10,_brightness);
+  else if(id>=9&&id<=12)
+    doRectangle(10+2*increment,10,_brightness);
 
-else if(id>=17&&id<=20)
-  doRectangle(10+4*increment,10,_brightness);
+  else if(id>=13&&id<=16)
+    doRectangle(10+3*increment,10,_brightness);
 
-else if(id>=21&&id<=24)
-  doRectangle(10+5*increment,10,_brightness);
+  else if(id>=17&&id<=20)
+    doRectangle(10+4*increment,10,_brightness);
 
-else if(id>=25&&id<=28)
-  doRectangle(10+6*increment,10,_brightness);
+  else if(id>=21&&id<=24)
+    doRectangle(10+5*increment,10,_brightness);
 
-else if(id>=29&&id<=32)
-  doRectangle(10+7*increment,10,_brightness);
+  else if(id>=25&&id<=28)
+    doRectangle(10+6*increment,10,_brightness);
 
-else if(id>=33&&id<=36)
-  doRectangle(10+8*increment,10,_brightness);
+  else if(id>=29&&id<=32)
+    doRectangle(10+7*increment,10,_brightness);
 
-else if(id>=37&&id<=38)
-  doRectangle(10+9*increment,10,_brightness);
+  else if(id>=33&&id<=36)
+    doRectangle(10+8*increment,10,_brightness);
 
-return;
+  else if(id>=37&&id<=38)
+    doRectangle(10+9*increment,10,_brightness);
+
+  return;
 }
 
 void doRectangle(int x, int y, int brightness) {
   fill(brightness);
   //println(brightness);
-  rect(x,y,80,780, 10);
+  rect(x,y,10,780, 10);
 }
 
 void drawLightsInit() {
   for(int i=1;i<=38; i++) {
-    updateLights(i, 33);
+    updateLightsbyID(i, 33);
   }
 }
